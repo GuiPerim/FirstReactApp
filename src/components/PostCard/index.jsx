@@ -21,8 +21,10 @@ export const PostCard = ({ post }) => ({
             <h3 alt={post.titles.en} title={post.titles.en} className="xablau">
               {post.titles.en}
             </h3>
-            <p>Some description here</p>
-            <p className="xablau">{post.trailer_url}</p>
+            <p className="description" title={post.descriptions.en}>
+              {post.descriptions.en}
+            </p>
+            {/* <p className="xablau">{post.trailer_url}</p> */}
           </div>
           <hr className="divider" />
           <div className="spacingCard">

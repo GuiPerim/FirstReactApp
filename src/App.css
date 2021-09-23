@@ -58,6 +58,16 @@
   border-bottom: solid var(--black-050);
 }
 
+.description {
+  margin-top: 15px;
+  overflow: hidden;
+  width: 100%;
+  min-height: 86px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
 .chip {
   padding-top: 2px;
   padding-right: 7px;
