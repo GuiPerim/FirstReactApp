@@ -25,6 +25,7 @@ export const PostCard = ({ post }) => ({
               {post.descriptions.en}
             </p>
             {/* <p className="xablau">{post.trailer_url}</p> */}
+            <p>{post.score}</p>
           </div>
           <hr className="divider" />
           <div className="spacingCard">
