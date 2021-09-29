@@ -39,7 +39,6 @@ export class Home extends Component {
     const { posts } = this.state;
     return (
       <section className="container">
-        <br />
         <Posts posts={posts}></Posts>
         <Button text={"xablau"} eventClick={this.loadMorePosts}></Button>
       </section>

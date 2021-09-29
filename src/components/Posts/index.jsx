@@ -13,7 +13,24 @@ export const Posts = ({ posts }) => (
         return true;
       })
       .map((post) => {
-        return <PostCard key={post.id} post={post} />;
+        return (
+          <PostCard
+            key={post.id}
+            post={post}
+            colors={[
+              "info",
+              "danger",
+              "warning",
+              "primary",
+              "secondary",
+              "blue",
+              "green",
+              "yellow",
+              "grey",
+              "brown",
+            ]}
+          />
+        );
       })}
   </div>
 );
