@@ -4,13 +4,14 @@ import "./styles.css";
 
 import { Posts } from "../../components/Posts";
 import { loadPosts } from "../../utils/load-posts";
+import { Button } from "../../components/Button";
 
 export class Home extends Component {
   state = {
     posts: [],
     allPosts: [],
     page: 0,
-    postPerPage: 5,
+    postPerPage: 4,
   };
 
   async componentDidMount() {
@@ -27,7 +28,11 @@ export class Home extends Component {
   };
 
   loadMorePosts = () => {
-    console.log("Function called!");
+    const { posts, allPosts, page, postPerPage } = this.state;
+    const nextPage = page + postPerPage;
+    const nextPosts = allPosts.slice(nextPage, nextPage + postPerPage);
+    posts.push(...nextPosts);
+    this.setState({ posts, page: nextPage });
   };
 
   render() {
@@ -36,7 +41,7 @@ export class Home extends Component {
       <section className="container">
         <br />
         <Posts posts={posts}></Posts>
-        <button onClick={this.loadMorePosts}>manda mais</button>
+        <Button text={"xablau"} eventClick={this.loadMorePosts}></Button>
       </section>
     );
   }
