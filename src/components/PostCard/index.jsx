@@ -1,3 +1,5 @@
+import "./styles.css";
+
 export const PostCard = ({ post, colors }) => (
   <div className="post">
     <a href={"check/" + post.id} className="link">
