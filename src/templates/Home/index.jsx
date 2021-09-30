@@ -36,11 +36,21 @@ export class Home extends Component {
   };
 
   render() {
-    const { posts } = this.state;
+    const { posts, page, postPerPage, allPosts } = this.state;
+    const hasPosts = page + postPerPage >= allPosts.length;
+    console.log("Teste: " + hasPosts);
+
     return (
       <section className="container">
         <Posts posts={posts}></Posts>
-        <Button text={"xablau"} eventClick={this.loadMorePosts}></Button>
+
+        <div className="button-container">
+          <Button
+            text={"Load more"}
+            disabled={hasPosts}
+            eventClick={this.loadMorePosts}
+          ></Button>
+        </div>
       </section>
     );
   }

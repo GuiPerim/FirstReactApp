@@ -1,8 +1,14 @@
 import { Component } from "react";
 
+import "./styles.css";
+
 export class Button extends Component {
   render() {
-    const { text, eventClick } = this.props;
-    return <button onClick={eventClick}>{text}</button>;
+    const { text, eventClick, disabled } = this.props;
+    return (
+      <button className="button" onClick={eventClick} disabled={disabled}>
+        {text}
+      </button>
+    );
   }
 }
