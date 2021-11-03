@@ -2,9 +2,10 @@ import { Component } from "react";
 
 import "./styles.css";
 
-import { Posts } from "../../components/Posts";
 import { loadPosts } from "../../utils/load-posts";
+import { Posts } from "../../components/Posts";
 import { Button } from "../../components/Button";
+import { Search } from "../../components/Search";
 
 export class Home extends Component {
   state = {
@@ -12,6 +13,7 @@ export class Home extends Component {
     allPosts: [],
     page: 0,
     postPerPage: 4,
+    search: "",
   };
 
   async componentDidMount() {
@@ -35,21 +37,41 @@ export class Home extends Component {
     this.setState({ posts, page: nextPage });
   };
 
+  handleChange = (e) => {
+    const { value } = e.target;
+    this.setState({ search: value });
+  };
+
   render() {
-    const { posts, page, postPerPage, allPosts } = this.state;
+    const { posts, page, postPerPage, allPosts, search } = this.state;
     const hasPosts = page + postPerPage >= allPosts.length;
-    console.log("Teste: " + hasPosts);
+
+    const filteredPosts = !!search
+      ? allPosts.filter((post) => {
+          return post.titles.en.includes(search);
+        })
+      : posts;
 
     return (
       <section className="container">
-        <Posts posts={posts}></Posts>
+        <div class="search-container">
+          <Search searchValue={search} handleChange={this.handleChange} />
+          {search && <h1 className="search-title">Search for: {search}</h1>}
+        </div>
+
+        {filteredPosts.length > 0 && <Posts posts={filteredPosts}></Posts>}
+        {filteredPosts.length === 0 && (
+          <div className="noresult"> No results found</div>
+        )}
 
         <div className="button-container">
-          <Button
-            text={"Load more"}
-            disabled={hasPosts}
-            eventClick={this.loadMorePosts}
-          ></Button>
+          {!search && (
+            <Button
+              text={"Load more"}
+              disabled={hasPosts}
+              eventClick={this.loadMorePosts}
+            ></Button>
+          )}
         </div>
       </section>
     );

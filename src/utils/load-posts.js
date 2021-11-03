@@ -1,7 +1,7 @@
 export const loadPosts = async () => {
   //Performing requests to the API
-  const postsResponse = fetch("https://jsonplaceholder.typicode.com/posts");
-  const photosResponse = fetch("https://jsonplaceholder.typicode.com/photos");
+  // const postsResponse = fetch("https://jsonplaceholder.typicode.com/posts");
+  // const photosResponse = fetch("https://jsonplaceholder.typicode.com/photos");
   const animeResponse = fetch("https://api.aniapi.com/v1/anime?&year=2021", {
     method: "GET",
     headers: {
@@ -13,20 +13,20 @@ export const loadPosts = async () => {
   });
 
   //TODO: Ver ao certo o que saporra faz
-  const [posts, photos, xablau] = await Promise.all([
-    postsResponse,
-    photosResponse,
+  const [/*posts, photos,*/ xablau] = await Promise.all([
+    // postsResponse,
+    // photosResponse,
     animeResponse,
   ]);
 
   //Converting response into json object
-  const postsJson = await posts.json();
-  const photosJson = await photos.json();
+  // const postsJson = await posts.json();
+  // const photosJson = await photos.json();
   const animesJson = await xablau.json();
 
   //Run through the object and handle the values
   const animes = animesJson.data.documents.map((anime, index) => {
-    return { ...anime, cover: photosJson[index].url };
+    return { ...anime };
   });
   return animes;
 
