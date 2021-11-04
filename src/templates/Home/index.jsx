@@ -48,7 +48,7 @@ export class Home extends Component {
 
     const filteredPosts = !!search
       ? allPosts.filter((post) => {
-          return post.titles.en.includes(search);
+          return post.titles.en.toLowerCase().includes(search.toLowerCase());
         })
       : posts;
 
