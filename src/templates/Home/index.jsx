@@ -14,6 +14,7 @@ export class Home extends Component {
     page: 0,
     postPerPage: 4,
     search: "",
+    order: "score",
   };
 
   async componentDidMount() {
@@ -42,20 +43,41 @@ export class Home extends Component {
     this.setState({ search: value });
   };
 
+  handleOrder = (e) => {
+    const { value } = e.target;
+    this.setState({ order: value });
+  };
+
   render() {
-    const { posts, page, postPerPage, allPosts, search } = this.state;
+    const { posts, page, postPerPage, allPosts, search, order } = this.state;
     const hasPosts = page + postPerPage >= allPosts.length;
 
-    const filteredPosts = !!search
-      ? allPosts.filter((post) => {
-          return post.titles.en.toLowerCase().includes(search.toLowerCase());
-        })
-      : posts;
+    let filteredPosts = null;
+    if (!!search) {
+      filteredPosts = allPosts.filter((post) => {
+        return post.titles.en.toLowerCase().includes(search.toLowerCase());
+      });
+
+      if (order === "name") {
+        filteredPosts.sort((a, b) =>
+          a.titles.en > b.titles.en ? 1 : b.titles.en > a.titles.en ? -1 : 0
+        );
+      } else {
+        filteredPosts.sort((a, b) =>
+          a.score < b.score ? 1 : b.score < a.score ? -1 : 0
+        );
+      }
+    } else filteredPosts = posts;
 
     return (
       <section className="container">
-        <div class="search-container">
-          <Search searchValue={search} handleChange={this.handleChange} />
+        <div className="search-container">
+          <Search
+            searchValue={search}
+            searchOrder={order}
+            handleChange={this.handleChange}
+            handleOrder={this.handleOrder}
+          />
           {search && <h1 className="search-title">Search for: {search}</h1>}
         </div>
 
