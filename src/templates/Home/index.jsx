@@ -3,6 +3,7 @@ import { Component } from "react";
 import "./styles.css";
 
 import { loadPosts } from "../../utils/load-posts";
+import { loadCategories } from "../../utils/load-categories";
 import { Posts } from "../../components/Posts";
 import { Button } from "../../components/Button";
 import { Search } from "../../components/Search";
@@ -15,15 +16,26 @@ export class Home extends Component {
     postPerPage: 4,
     search: "",
     order: "score",
+    category: "#",
+    allCategories: [],
   };
 
   async componentDidMount() {
     await this.loadPosts();
+    await this.loadCategories();
   }
+
+  loadCategories = async () => {
+    const categories = await loadCategories();
+    this.setState({
+      allCategories: categories,
+    });
+  };
 
   loadPosts = async () => {
     const { page, postPerPage } = this.state;
     const postsAndPhotos = await loadPosts();
+
     this.setState({
       posts: postsAndPhotos.slice(page, postPerPage),
       allPosts: postsAndPhotos,
@@ -48,15 +60,38 @@ export class Home extends Component {
     this.setState({ order: value });
   };
 
+  handleCategory = (e) => {
+    const { value } = e.target;
+    this.setState({ category: value });
+  };
+
   render() {
-    const { posts, page, postPerPage, allPosts, search, order } = this.state;
+    const {
+      posts,
+      page,
+      postPerPage,
+      allPosts,
+      search,
+      order,
+      category,
+      allCategories,
+    } = this.state;
     const hasPosts = page + postPerPage >= allPosts.length;
 
     let filteredPosts = null;
-    if (!!search) {
-      filteredPosts = allPosts.filter((post) => {
-        return post.titles.en.toLowerCase().includes(search.toLowerCase());
-      });
+    if (!!search || category !== "#") {
+      filteredPosts = allPosts;
+
+      if (!!search)
+        filteredPosts = allPosts.filter((post) => {
+          return post.titles.en.toLowerCase().includes(search.toLowerCase());
+        });
+
+      if (category !== "#") {
+        filteredPosts = filteredPosts.filter((post) => {
+          return post.genres.includes(category);
+        });
+      }
 
       if (order === "name") {
         filteredPosts.sort((a, b) =>
@@ -75,8 +110,11 @@ export class Home extends Component {
           <Search
             searchValue={search}
             searchOrder={order}
+            searchCategory={category}
+            allCategories={allCategories}
             handleChange={this.handleChange}
             handleOrder={this.handleOrder}
+            handleCategory={this.handleCategory}
           />
           {search && <h1 className="search-title">Search for: {search}</h1>}
         </div>

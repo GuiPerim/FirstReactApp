@@ -1,6 +1,5 @@
-export const loadPosts = async () => {
-  //Performing requests to the API
-  const animeResponse = fetch("https://api.aniapi.com/v1/anime?&year=2021", {
+export const loadCategories = async () => {
+  const animeResponse = fetch("https://api.aniapi.com/v1/resources/1.0/0", {
     method: "GET",
     headers: {
       Authorization:
@@ -13,9 +12,5 @@ export const loadPosts = async () => {
   const [xablau] = await Promise.all([animeResponse]);
   const animesJson = await xablau.json();
 
-  //Run through the object and handle the values
-  const animes = animesJson.data.documents.map((anime, index) => {
-    return { ...anime };
-  });
-  return animes;
+  return animesJson.data.genres.sort();
 };
