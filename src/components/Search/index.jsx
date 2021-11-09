@@ -40,7 +40,11 @@ export const Search = ({
         </option>
         {allCategories &&
           allCategories.map((category) => {
-            return <option value={category}>{category}</option>;
+            return (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            );
           })}
       </select>
     </>
